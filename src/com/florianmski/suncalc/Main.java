@@ -1,13 +1,13 @@
 package com.florianmski.suncalc;
 
 import com.florianmski.suncalc.models.SunPhase;
-import com.florianmski.suncalc.utils.DateUtils;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class Main
 {
-    private static Calendar d = Calendar.getInstance();
+    private static Calendar d = new GregorianCalendar(2013, 11, 1, 0, 1, 0);
     // Paris coordinates
     private static final double LAT = 48.818684;
     private static final double LON = 2.323096;
@@ -30,14 +30,8 @@ public class Main
             System.out.println("===========================================");
         }
 
-        System.out.println("position : " + SunCalc.getSunPosition(d, LAT, LON).getAzimuth() + "°");
-
-        for(int i = 0; i < 10; i++)
-        {
-            d.roll(Calendar.HOUR_OF_DAY, 1);
-            System.out.println("toDays : " + DateUtils.toDays(d));
-            System.out.println("getSunPosition : " + SunCalc.getSunPosition(d, LAT, LON).getAzimuth());
-        }
+        System.out.println("azimuth : " + SunCalc.getSunPosition(d, LAT, LON).getAzimuth());
+        System.out.println("altitude : " + SunCalc.getSunPosition(d, LAT, LON).getAltitude());
     }
 
     private static void moonPhaseTest()

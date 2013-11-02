@@ -11,15 +11,18 @@ public class DateUtils
     public static double toJulian(Calendar date)
     {
         // offset to add depending on user timezone
-        long offset = date.get(Calendar.ZONE_OFFSET) + date.get(Calendar.DST_OFFSET);
-        return (((float)date.getTimeInMillis() + offset) / DAY_MS) - 0.5 + J1970;
+        // I'm not sure about that, it's not used in the JS lib but:
+        // - I'm in France and between 00:00 and 01:00 the sunphases were still calculated for the day before
+        // - I've tested the app with and without offset, with seems to be more accurate regarding the azimuth
+        long offset = date.getTimeZone().getOffset(date.getTimeInMillis());
+        return ((double)date.getTimeInMillis() + offset) / DAY_MS - 0.5 + J1970;
     }
 
     public static Calendar fromJulian(double j)
     {
-        Calendar d = Calendar.getInstance();
-        d.setTimeInMillis((long) ((j + 0.5 - J1970) * DAY_MS));
-        return d;
+        Calendar date = Calendar.getInstance();
+        date.setTimeInMillis((long) (((j + 0.5 - J1970) * DAY_MS)));
+        return date;
     }
 
     public static double toDays(Calendar date)
