@@ -8,3 +8,6 @@
 # IDE files #
 .idea/
 *.iml
+
+# Maven Files #
+target
