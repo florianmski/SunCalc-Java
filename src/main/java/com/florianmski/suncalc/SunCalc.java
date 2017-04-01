@@ -53,6 +53,14 @@ public class SunCalc
         return (1 + Math.cos(inc)) / 2;
     }
 
+    /**
+     * Calculates phases of the sun for a single day
+     *
+     * @param date the day to calculate sun positions for
+     * @param lat measured from North, in degrees
+     * @param lng measured from East, in degrees
+     * @return phases by name, with their start/end times and angles
+     */
     public static List<SunPhase> getPhases(Calendar date, double lat, double lng)
     {
         double lw  = Constants.RAD * -lng;
