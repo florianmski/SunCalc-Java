@@ -9,19 +9,19 @@ public class SunPhase
 {
     public enum Name
     {
-        NIGHT_MORNING("Night"),
-        TWILIGHT_ASTRONOMICAL_MORNING("Twilight Astronomical"),
-        TWILIGHT_NAUTICAL_MORNING("Twilight Nautical"),
-        TWILIGHT_CIVIL_MORNING("Twilight Civil"),
+        NIGHT_MORNING("Night Morning"),
+        TWILIGHT_ASTRONOMICAL_MORNING("Twilight Astronomical Morning"),
+        TWILIGHT_NAUTICAL_MORNING("Twilight Nautical Morning"),
+        TWILIGHT_CIVIL_MORNING("Twilight Civil Morning"),
         SUNRISE("Sunrise"),
-        GOLDEN_HOUR_MORNING("Golden Hour"),
+        GOLDEN_HOUR_MORNING("Golden Hour Morning"),
         DAYLIGHT("Daylight"),
-        GOLDEN_HOUR_EVENING("Golden Hour"),
+        GOLDEN_HOUR_EVENING("Golden Hour Evening"),
         SUNSET("Sunset"),
-        TWILIGHT_CIVIL_EVENING("Twilight Civil"),
-        TWILIGHT_NAUTICAL_EVENING("Twilight Nautical"),
-        TWILIGHT_ASTRONOMICAL_EVENING("Twilight Astronomical"),
-        NIGHT_EVENING("Night");
+        TWILIGHT_CIVIL_EVENING("Twilight Civil Evening"),
+        TWILIGHT_NAUTICAL_EVENING("Twilight Nautical Evening"),
+        TWILIGHT_ASTRONOMICAL_EVENING("Twilight Astronomical Evening"),
+        NIGHT_EVENING("Night Evening");
 
         private final String value;
         private Name(String value)
@@ -85,7 +85,7 @@ public class SunPhase
             case TWILIGHT_NAUTICAL_EVENING:
                 return new SunPhase(name, SunAngles.TWILIGHT_NAUTICAL_EVENING_START, false, SunAngles.TWILIGHT_NAUTICAL_EVENING_END, false);
             case TWILIGHT_CIVIL_EVENING:
-                return new SunPhase(name, SunAngles.TWILIGHT_CIVIC_EVENING_START, false, SunAngles.TWILIGHT_CIVIC_EVENING_END, false);
+                return new SunPhase(name, SunAngles.TWILIGHT_CIVIL_EVENING_START, false, SunAngles.TWILIGHT_CIVIL_EVENING_END, false);
             case NIGHT_EVENING:
                 return new SunPhase(name, SunAngles.NIGHT_START, false, SunAngles.NIGHT_END, true);
             case NIGHT_MORNING:
@@ -152,5 +152,18 @@ public class SunPhase
     public void setEndDate(Calendar endDate)
     {
         this.endDate = endDate;
+    }
+
+    @Override
+    public String toString() {
+        return "SunPhase{" +
+                "name=" + name +
+                ", startAngle=" + startAngle +
+                ", endAngle=" + endAngle +
+                ", startRise=" + startRise +
+                ", endRise=" + endRise +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
     }
 }

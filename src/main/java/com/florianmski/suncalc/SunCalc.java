@@ -7,12 +7,24 @@ import com.florianmski.suncalc.utils.*;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Calculations for the sun and moon relative to earth
+ */
 public class SunCalc
 {
+    /**
+     *
+     * Calculates the sun's position at a particular location and moment
+     *
+     * @param date the day, time and timezone to calculate for
+     * @param lat measured from North, in degrees
+     * @param lng measured from East, in degrees
+     * @return the sun's position in the sky relative to the location
+     */
     public static SunPosition getSunPosition(Calendar date, double lat, double lng)
     {
-        double lw  = Constants.RAD * -lng;
-        double phi = Constants.RAD * lat;
+        double lw  = Constants.TO_RAD * -lng;
+        double phi = Constants.TO_RAD * lat;
         double d   = DateUtils.toDays(date);
 
         EquatorialCoordinates c = SunUtils.getSunCoords(d);
@@ -23,10 +35,19 @@ public class SunCalc
                 PositionUtils.getAltitude(H, phi, c.getDeclination()));
     }
 
+    /**
+     *
+     * Calculates the moon's position at a particular location and moment
+     *
+     * @param date the day, time and timezone to calculate for
+     * @param lat measured from North, in degrees
+     * @param lng measured from East, in degrees
+     * @return the moon's position in the sky relative to the location
+     */
     public static MoonPosition getMoonPosition(Calendar date, double lat, double lng)
     {
-        double lw  = Constants.RAD * -lng;
-        double phi = Constants.RAD * lat;
+        double lw  = Constants.TO_RAD * -lng;
+        double phi = Constants.TO_RAD * lat;
         double d = DateUtils.toDays(date);
 
         GeocentricCoordinates c = MoonUtils.getMoonCoords(d);
@@ -34,11 +55,19 @@ public class SunCalc
         double h = PositionUtils.getAltitude(H, phi, c.getDeclination());
 
         // altitude correction for refraction
-        h = h + Constants.RAD * 0.017 / Math.tan(h + Constants.RAD * 10.26 / (h + Constants.RAD * 5.10));
+        h = h + Constants.TO_RAD * 0.017 / Math.tan(h + Constants.TO_RAD * 10.26 / (h + Constants.TO_RAD * 5.10));
 
         return new MoonPosition(PositionUtils.getAzimuth(H, phi, c.getDeclination()), h, c.getDistance());
     }
 
+    /**
+     * Calculates moon illumination for a particular day and time.
+     * Location is not needed because percentage will be the same for
+     * both Northern and Southern hemisphere.
+     *
+     * @param date the day, time and timezone to calculate for
+     * @return fraction of moon's illuminated limb and phase
+     */
     public static double getMoonFraction(Calendar date)
     {
         double d = DateUtils.toDays(date);
@@ -53,10 +82,18 @@ public class SunCalc
         return (1 + Math.cos(inc)) / 2;
     }
 
+    /**
+     * Calculates phases of the sun for a single day
+     *
+     * @param date the day and timezone to calculate sun positions for, time is ignored
+     * @param lat measured from North, in degrees
+     * @param lng measured from East, in degrees
+     * @return phases by name, with their start/end angles and start/end times
+     */
     public static List<SunPhase> getPhases(Calendar date, double lat, double lng)
     {
-        double lw  = Constants.RAD * -lng;
-        double phi = Constants.RAD * lat;
+        double lw  = Constants.TO_RAD * -lng;
+        double phi = Constants.TO_RAD * lat;
         double d   = DateUtils.toDays(date);
 
         double n  = TimeUtils.getJulianCycle(d, lw);
@@ -98,7 +135,7 @@ public class SunCalc
 
     private static Calendar getPhaseDate(double angle, boolean rising, double jnoon, double phi, double dec, double lw, double n, double M, double L)
     {
-        double h = angle * Constants.RAD;
+        double h = angle * Constants.TO_RAD;
         double w = TimeUtils.getHourAngle(h, phi, dec);
         double a = TimeUtils.getApproxTransit(w, lw, n);
 
