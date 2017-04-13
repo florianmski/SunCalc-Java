@@ -188,5 +188,30 @@ class SunCalcSpec extends spock.lang.Specification {
         return Math.abs(val1 - val2) < margin
     }
 
+    def "calculations should return same timezone as original: #timeZone"() {
+
+        given:
+        // Mumbai, India
+        double lat = 19.08
+        double lng = 72.88
+        TimeZone originalTimeZone = TimeZone.getTimeZone(timeZone)
+        Calendar d = Calendar.getInstance(originalTimeZone)
+        d.setTime(new Date())
+
+        when:
+        List<SunPhase> phases = SunCalc.getPhases(d, lat, lng)
+
+        then:
+        phases.forEach {
+            assert it.startDate.timeZone == originalTimeZone
+            assert it.endDate.timeZone == originalTimeZone
+        }
+
+        where:
+        // have at least two time zones for the test, in case one of them is the tester's native one
+        timeZone   | _
+        'GMT+5:50' | _
+        'GMT-8:00' | _
+    }
 
 }

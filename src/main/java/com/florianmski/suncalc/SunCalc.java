@@ -6,6 +6,7 @@ import com.florianmski.suncalc.utils.*;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Calculations for the sun and moon relative to earth
@@ -109,10 +110,15 @@ public class SunCalc
 
         List<SunPhase> results = SunPhase.all();
 
+        TimeZone originalTimeZone = date.getTimeZone();
         for(SunPhase sunPhase : results)
         {
-            sunPhase.setStartDate(getPhaseDate(sunPhase.getStartAngle(), sunPhase.isStartRise(), jnoon, phi, dec, lw, n, M, L));
-            sunPhase.setEndDate(getPhaseDate(sunPhase.getEndAngle(), sunPhase.isEndRise(), jnoon, phi, dec, lw, n, M, L));
+            Calendar startDate = getPhaseDate(sunPhase.getStartAngle(), sunPhase.isStartRise(), jnoon, phi, dec, lw, n, M, L);
+            startDate.setTimeZone(originalTimeZone);
+            sunPhase.setStartDate(startDate);
+            Calendar endDate = getPhaseDate(sunPhase.getEndAngle(), sunPhase.isEndRise(), jnoon, phi, dec, lw, n, M, L);
+            endDate.setTimeZone(originalTimeZone);
+            sunPhase.setEndDate(endDate);
         }
 
         // not pretty, this is to have correct dates
