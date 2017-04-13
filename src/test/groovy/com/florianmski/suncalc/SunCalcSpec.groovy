@@ -2,7 +2,7 @@ package com.florianmski.suncalc
 
 import com.florianmski.suncalc.models.SunPhase
 import com.florianmski.suncalc.models.SunPosition
-import spock.lang.Ignore
+import spock.lang.Shared
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -10,9 +10,11 @@ import java.text.SimpleDateFormat
 import static com.florianmski.suncalc.models.SunPhase.Name.*
 
 /**
- * Unit tests for sun calculations
+ * Unit tests for sun and moon calculations
  */
 class SunCalcSpec extends spock.lang.Specification {
+
+    // ------------------------ SUN CALCULATION TESTS -------------------------------
 
     def "should calculate correct sun position for #location.description"() {
 
@@ -61,20 +63,6 @@ class SunCalcSpec extends spock.lang.Specification {
         TestData.PARIS | TWILIGHT_ASTRONOMICAL_EVENING | 'Sun Dec 01 12:14:14 EST 2013' | -12.0       | 'Sun Dec 01 12:52:12 EST 2013' | -18.0
         TestData.PARIS | NIGHT_EVENING                 | 'Sun Dec 01 12:52:12 EST 2013' | -18.0       | 'Sun Dec 01 23:59:59 EST 2013' | -18.0
 
-    }
-
-    @Ignore("original Moon Java test code ported, but not yet fully tested")
-    def "moonPhaseTest"() {
-        given:
-        Calendar d = new GregorianCalendar(2013, 11, 1, 0, 1, 0);
-
-        expect:
-        System.out.println("fraction : " + SunCalc.getMoonFraction(d));
-
-        for (int i = 0; i < 31; i++) {
-            d.roll(Calendar.DAY_OF_YEAR, 1);
-            System.out.println("fraction : " + SunCalc.getMoonFraction(d));
-        }
     }
 
     enum TestData {
@@ -166,15 +154,38 @@ class SunCalcSpec extends spock.lang.Specification {
 
     }
 
-    /** 1E-15 */
-    private static double DEFAULT_MARGIN = 0.000000000000001
+    // ----------------------- MOON CALCULATION TESTS -------------------------------
+
+    @Shared
+    double MOON_CALC_ACCURACY = 0.05
+
+    def "calculate moon phase illumination for #description using Naval Observatory Data"() {
+        given:
+        Calendar d = new GregorianCalendar(year, month, day, hour, min, 0)
+        d.setTimeZone(TimeZone.getTimeZone("UTC"))
+
+        expect:
+        near(SunCalc.getMoonFraction(d), expectedIllumination, MOON_CALC_ACCURACY)
+
+        // expected data from US Naval Observatory
+        // http://aa.usno.navy.mil/cgi-bin/aa_phases.pl?year=2013&month=11&day=1&nump=50&format=p
+        where:
+        year | month             | day | hour | min | expectedIllumination | description
+        2013 | Calendar.NOVEMBER | 3   | 0    | 22  | 0.00                 | 'new moon on Nov 3, 2013'
+        2013 | Calendar.NOVEMBER | 10  | 15   | 12  | 0.50                 | 'first quarter on Nov 10, 2013'
+        2013 | Calendar.NOVEMBER | 17  | 9    | 28  | 1.00                 | 'full moon on Nov 17, 2013'
+        2013 | Calendar.NOVEMBER | 25  | 13   | 48  | 0.50                 | 'last quarter on Nov 25, 2013'
+
+    }
+
+    private static double DEFAULT_MARGIN = Math.pow(10, -15)
 
     private static boolean near(double val1, double val2) {
         return near(val1, val2, DEFAULT_MARGIN)
     }
 
     private static boolean near(double val1, double val2, double margin) {
-        return Math.abs(val1 - val2) < (margin)
+        return Math.abs(val1 - val2) < margin
     }
 
 

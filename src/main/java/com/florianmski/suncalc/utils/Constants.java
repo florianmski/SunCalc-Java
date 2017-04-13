@@ -2,11 +2,9 @@ package com.florianmski.suncalc.utils;
 
 public class Constants
 {
-    /** units: radians/degrees */
-    public final static double RAD = Math.PI / 180.0;
+    public final static double TO_RAD = Math.PI / 180.0;
 
-    /** obliquity of the Earth */
-    public final static double E = RAD * 23.4397;
+    public final static double EARTH_OBLIQUITY = TO_RAD * 23.4397;
 
     /**
      * <p>
@@ -24,11 +22,11 @@ public class Constants
     {
         /** sunrise (top edge of the sun appears on the horizon) */
         public final static double SUNRISE_START                        = -0.833;
-        /** morning golden hour starts (soft light, best time for photography) */
+        /** soft, warm light as sun is rising (best time for photography) */
          public final static double GOLDEN_HOUR_MORNING_START            = -0.3;
         /** daylight starts */
         public final static double DAYLIGHT_START                       = 6.0;
-        /** evening golden hour starts */
+        /** soft, warm light as sun is setting (best time for photography) */
         public final static double GOLDEN_HOUR_EVENING_START            = DAYLIGHT_START;
         /** sunset starts (bottom edge of the sun touches the horizon) */
         public final static double SUNSET_START                         = GOLDEN_HOUR_MORNING_START;
