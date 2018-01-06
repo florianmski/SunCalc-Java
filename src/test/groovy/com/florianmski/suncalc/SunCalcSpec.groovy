@@ -129,7 +129,7 @@ class SunCalcSpec extends spock.lang.Specification {
         timeFormat.setTimeZone(UTC)
 
         and:
-        Date date = dtmFormat.parse(datetime)
+        Date date = dtmFormat.parse(startdatetime)
         Calendar d = Calendar.getInstance(UTC)
         d.setTime(date)
 
@@ -146,15 +146,15 @@ class SunCalcSpec extends spock.lang.Specification {
         timeFormat.format(actual.startDate.time) == timeFormat.format(date)
 
         where:
-        sunPhaseName                                | description     | datetime
-//        'TODO implement'      | 'nadir'         | '2013-03-04T22:10:57Z'
+        sunPhaseName                                | description     | startdatetime
+        SunPhase.Name.NIGHT_RISING                  | 'nadir'         | '2013-03-04T22:10:57Z'
         SunPhase.Name.TWILIGHT_ASTRONOMICAL_MORNING | 'nightEnd'      | '2013-03-05T02:46:17Z'
         SunPhase.Name.TWILIGHT_NAUTICAL_MORNING     | 'nauticalDawn'  | '2013-03-05T03:24:31Z'
         SunPhase.Name.TWILIGHT_CIVIL_MORNING        | 'dawn'          | '2013-03-05T04:02:17Z'
         SunPhase.Name.SUNRISE                       | 'sunrise'       | '2013-03-05T04:34:56Z'
         SunPhase.Name.GOLDEN_HOUR_MORNING           | 'sunriseEnd'    | '2013-03-05T04:38:19Z'
         SunPhase.Name.DAYLIGHT                      | 'goldenHourEnd' | '2013-03-05T05:19:01Z'
-//        'TODO implement'      | 'solarNoon'     | '2013-03-05T10:10:57Z'
+        SunPhase.Name.DAYLIGHT_SETTING              | 'solarNoon'     | '2013-03-05T10:10:57Z'
         SunPhase.Name.GOLDEN_HOUR_EVENING           | 'goldenHour'    | '2013-03-05T15:02:52Z'
         SunPhase.Name.SUNSET                        | 'sunsetStart'   | '2013-03-05T15:43:34Z'
         SunPhase.Name.TWILIGHT_CIVIL_EVENING        | 'sunset'        | '2013-03-05T15:46:57Z'
