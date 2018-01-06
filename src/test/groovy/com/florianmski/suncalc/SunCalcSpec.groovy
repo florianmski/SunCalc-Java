@@ -31,6 +31,17 @@ class SunCalcSpec extends spock.lang.Specification {
 
     }
 
+    /**
+     * <p>
+     *  This test was written from the eastern timezone, using <a href="suncalc.net">suncalc.net</a>. The reason it looks
+     *  funny is because although the region is in Paris, the times returned by the web API are always in the person's
+     *  default timezone [perhaps by design]. A screenshot is attached in
+     * </p>
+     * <p>
+     *  Depsite its quirks, this parameterized test serves as a solid regression of all calculated phases of the Java
+     *  API.
+     * </p>
+     */
     def "should calculate correct phase #phase for #location.description"() {
 
         when:
@@ -61,7 +72,7 @@ class SunCalcSpec extends spock.lang.Specification {
         TestData.PARIS | TWILIGHT_CIVIL_EVENING        | 'Sun Dec 01 10:58:21 EST 2013' | -0.833      | 'Sun Dec 01 11:34:35 EST 2013' | -6.0
         TestData.PARIS | TWILIGHT_NAUTICAL_EVENING     | 'Sun Dec 01 11:34:35 EST 2013' | -6.0        | 'Sun Dec 01 12:14:14 EST 2013' | -12.0
         TestData.PARIS | TWILIGHT_ASTRONOMICAL_EVENING | 'Sun Dec 01 12:14:14 EST 2013' | -12.0       | 'Sun Dec 01 12:52:12 EST 2013' | -18.0
-        TestData.PARIS | NIGHT_EVENING                 | 'Sun Dec 01 12:52:12 EST 2013' | -18.0       | 'Sun Dec 01 23:59:59 EST 2013' | -18.0
+        TestData.PARIS | NIGHT_EVENING                 | 'Sun Dec 01 12:52:12 EST 2013' | -18.0       | 'Sun Dec 01 00:30:22 EST 2013' | -18.0
 
     }
 
