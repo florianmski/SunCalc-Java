@@ -100,7 +100,7 @@ public class SunCalc
         double n  = TimeUtils.getJulianCycle(d, lw);
         double ds = TimeUtils.getApproxTransit(0, lw, n);
 
-        double M = SunUtils.getSolarMeanAnomaly(ds);
+        double M = SunUtils.getSolarMeanAnomaly(d);
         double C = SunUtils.getEquationOfCenter(M);
         double L = SunUtils.getEclipticLongitude(M, C);
 
