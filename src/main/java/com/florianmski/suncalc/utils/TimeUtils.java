@@ -51,7 +51,7 @@ public class TimeUtils
      * Better estimate for solar transit, with eccentricity and obliquity corrections (eq. 35)
      *
      * @param ds approximate first order solar transit, in Julian days
-     * @param M Earth's mean anomaly, in radians (eq. 3)
+     * @param M Earth's mean anomaly, in radians, recalculated for the Julian day in question using eq. 33 and eq. 34
      * @param L ecliptic longitude of the Sun, in radians (eq. 8)
      * @return solar transit, in Julian days
      */
