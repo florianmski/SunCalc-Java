@@ -2,8 +2,10 @@ package com.florianmski.suncalc.utils;
 
 public class Constants
 {
+    /** Multiplier to convert from degrees to radians */
     public final static double TO_RAD = Math.PI / 180.0;
 
+    /** Measure of the tilt of the earth, in radians */
     public final static double EARTH_OBLIQUITY = TO_RAD * 23.4397;
 
     /**
@@ -69,5 +71,10 @@ public class Constants
         public final static double TWILIGHT_NAUTICAL_MORNING_END        = TWILIGHT_CIVIL_MORNING_START;
         /** morning civil twilight ends (top edge of the sun appears on the horizon) */
         public final static double TWILIGHT_CIVIL_MORNING_END           = SUNRISE_START;
+
+        /** sun is directly overhead */
+        public final static double SOLAR_NOON                           = 90;
+        /** sun is directly below */
+        public final static double NADIR                                = -90;
     }
 }

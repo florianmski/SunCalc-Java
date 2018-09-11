@@ -31,6 +31,17 @@ class SunCalcSpec extends spock.lang.Specification {
 
     }
 
+    /**
+     * <p>
+     *  This test was written from the eastern timezone, using <a href="suncalc.net">suncalc.net</a>. The reason it looks
+     *  funny is because although the region is in Paris, the times returned by the web API are always in the person's
+     *  default timezone [perhaps by design]. A screenshot is attached in
+     * </p>
+     * <p>
+     *  Depsite its quirks, this parameterized test serves as a solid regression of all calculated phases of the Java
+     *  API.
+     * </p>
+     */
     def "should calculate correct phase #phase for #location.description"() {
 
         when:
@@ -61,7 +72,7 @@ class SunCalcSpec extends spock.lang.Specification {
         TestData.PARIS | TWILIGHT_CIVIL_EVENING        | 'Sun Dec 01 10:58:21 EST 2013' | -0.833      | 'Sun Dec 01 11:34:35 EST 2013' | -6.0
         TestData.PARIS | TWILIGHT_NAUTICAL_EVENING     | 'Sun Dec 01 11:34:35 EST 2013' | -6.0        | 'Sun Dec 01 12:14:14 EST 2013' | -12.0
         TestData.PARIS | TWILIGHT_ASTRONOMICAL_EVENING | 'Sun Dec 01 12:14:14 EST 2013' | -12.0       | 'Sun Dec 01 12:52:12 EST 2013' | -18.0
-        TestData.PARIS | NIGHT_EVENING                 | 'Sun Dec 01 12:52:12 EST 2013' | -18.0       | 'Sun Dec 01 23:59:59 EST 2013' | -18.0
+        TestData.PARIS | NIGHT_EVENING                 | 'Sun Dec 01 12:52:12 EST 2013' | -18.0       | 'Sun Dec 01 00:30:22 EST 2013' | -18.0
 
     }
 
@@ -118,7 +129,7 @@ class SunCalcSpec extends spock.lang.Specification {
         timeFormat.setTimeZone(UTC)
 
         and:
-        Date date = dtmFormat.parse(datetime)
+        Date date = dtmFormat.parse(startdatetime)
         Calendar d = Calendar.getInstance(UTC)
         d.setTime(date)
 
@@ -135,15 +146,15 @@ class SunCalcSpec extends spock.lang.Specification {
         timeFormat.format(actual.startDate.time) == timeFormat.format(date)
 
         where:
-        sunPhaseName                                | description     | datetime
-//        'TODO implement'      | 'nadir'         | '2013-03-04T22:10:57Z'
+        sunPhaseName                                | description     | startdatetime
+        SunPhase.Name.NIGHT_RISING                  | 'nadir'         | '2013-03-04T22:10:57Z'
         SunPhase.Name.TWILIGHT_ASTRONOMICAL_MORNING | 'nightEnd'      | '2013-03-05T02:46:17Z'
         SunPhase.Name.TWILIGHT_NAUTICAL_MORNING     | 'nauticalDawn'  | '2013-03-05T03:24:31Z'
         SunPhase.Name.TWILIGHT_CIVIL_MORNING        | 'dawn'          | '2013-03-05T04:02:17Z'
         SunPhase.Name.SUNRISE                       | 'sunrise'       | '2013-03-05T04:34:56Z'
         SunPhase.Name.GOLDEN_HOUR_MORNING           | 'sunriseEnd'    | '2013-03-05T04:38:19Z'
         SunPhase.Name.DAYLIGHT                      | 'goldenHourEnd' | '2013-03-05T05:19:01Z'
-//        'TODO implement'      | 'solarNoon'     | '2013-03-05T10:10:57Z'
+        SunPhase.Name.DAYLIGHT_SETTING              | 'solarNoon'     | '2013-03-05T10:10:57Z'
         SunPhase.Name.GOLDEN_HOUR_EVENING           | 'goldenHour'    | '2013-03-05T15:02:52Z'
         SunPhase.Name.SUNSET                        | 'sunsetStart'   | '2013-03-05T15:43:34Z'
         SunPhase.Name.TWILIGHT_CIVIL_EVENING        | 'sunset'        | '2013-03-05T15:46:57Z'

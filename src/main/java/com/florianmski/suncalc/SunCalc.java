@@ -142,6 +142,13 @@ public class SunCalc
 
     private static Calendar getPhaseDate(double angle, boolean rising, double jnoon, double phi, double dec, double lw, double n, double M, double L)
     {
+        // short circuit at inflection points
+        if (angle == Constants.SunAngles.SOLAR_NOON) {
+            return DateUtils.fromJulian(jnoon);
+        } else if (angle == Constants.SunAngles.NADIR) {
+            return DateUtils.fromJulian(jnoon - 0.5);
+        }
+
         double h = angle * Constants.TO_RAD;
         double w = TimeUtils.getHourAngle(h, phi, dec);
         double a = TimeUtils.getApproxTransit(w, lw, n);
